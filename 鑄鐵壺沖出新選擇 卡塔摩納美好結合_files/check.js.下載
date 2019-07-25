@@ -1,0 +1,397 @@
+function check_postnu ( postnu )
+{
+	if( postnu.length <=0 )
+		return( "您的郵遞區號還沒填喔 !\n" );
+	if( postnu.length < 3 || postnu.length >3 )
+	    return( "您輸入的郵遞區號請為3位數 !\n" );
+	for( poid = 0 ; poid < postnu.length ; poid++ )
+	{
+	   if( !(postnu.charAt(poid) >= '0' && postnu.charAt(poid) <= '9') )
+		   return( "您輸入的郵遞區號只能為數字 !\n" );
+	}
+	return "";
+}
+
+
+function check_uid ( uid )
+{
+    if( uid.length <= 0 )
+        return( "您的帳號還沒填呢 !\n" );
+    if( uid.length < 6 || uid.length > 16 )
+        return( "您的帳號長度只能 6 至 16 個字元 !\n" );
+    if ( !(uid.charAt(0) >= 'a' && uid.charAt(0) <= 'z') ) {
+        return( "您的帳號第一字元只能為小寫字母 !\n" );
+    }
+    for( idx = 0 ; idx < uid.length ; idx++ )
+    {
+        if( uid.charAt(idx) >= 'A' && uid.charAt(idx) <= 'Z' )
+            return( "帳號不可以含有大寫字元 !\n" );
+        if( !( ( uid.charAt(idx) >= 'a' && uid.charAt(idx) <= 'z' ) || ( uid.charAt(idx) >= '0' && uid.charAt(idx) <= '9' ) || ( uid.charAt(idx) == '_' ) )  )
+            return( "您的帳號只能是數字,英文字母及「_」等符號,其他的符號都不能使用 !\n" );
+        if( uid.charAt(idx) == '_' && uid.charAt(idx-1) == '_' )
+            return( "「_」符號不可相連 !\n" );
+    }
+    if( uid.charAt( uid.length - 1 ) == '_' )
+        return( "「_」符號不可在最後 !\n" );
+    return "";
+}
+
+function check_email (email)
+{
+   var len = email.length;
+   var ck =0;
+   if(len==0)
+      return "您的電子郵件地址空白ㄛ!\n";
+   for(var i=0;i<len;i++)
+   {  var c= email.charAt(i);
+      if(!((c>="A"&&c<="Z")||(c>="a"&&c<="z")||(c>="0"&&c<="9")||(c=="-")||(c=="_")||(c==".")||(c=="@")))
+         return "您的電子郵件地址只能是數字,英文字母及'-','_'等符號,其他的符號都不能使用 !\n";
+   }
+   if((email.indexOf("@")==-1)||(email.indexOf("@")==0)||(email.indexOf("@")==(len-1)))
+      return "您的電子郵件地址不合法 !\n";
+   if((email.indexOf("@")!=-1)&&(email.substring(email.indexOf("@")+1,len).indexOf("@")!=-1))
+      return "您的電子郵件地址不合法 !\n";
+   if((email.indexOf(".")==-1)||(email.indexOf(".")==0)||(email.lastIndexOf(".")==(len-1)))
+      return "您的電子郵件地址不完全 !\n";
+   return "";
+}
+
+function check_email_en (email)
+{
+   var len = email.length;
+   var ck =0;
+   if(len==0)
+      return "Your email is mandatory.\n";
+   for(var i=0;i<len;i++)
+   {  var c= email.charAt(i);
+      if(!((c>="A"&&c<="Z")||(c>="a"&&c<="z")||(c>="0"&&c<="9")||(c=="-")||(c=="_")||(c==".")||(c=="@")))
+         return "Sorry, only letters (a-z), numbers (0-9), periods (.), dash (-), and underscore (_) are allowed !\n";
+   }
+   if((email.indexOf("@")==-1)||(email.indexOf("@")==0)||(email.indexOf("@")==(len-1)))
+      return "Please enter a valid email address !\n";
+   if((email.indexOf("@")!=-1)&&(email.substring(email.indexOf("@")+1,len).indexOf("@")!=-1))
+      return "Please enter a valid email address !\n";
+   if((email.indexOf(".")==-1)||(email.indexOf(".")==0)||(email.lastIndexOf(".")==(len-1)))
+      return "Please enter a complete email address !\n";
+   return "";
+}
+
+function mm_openbrwindow ( theurl, winname, features )
+{
+    window.open( theurl, winname, features );
+}
+
+function check_identity ( id ,name)
+{
+   if (id.length == 0){
+     return name + '身分證字號還沒填呢 !\n';
+    }
+     
+  var id=id.toUpperCase()
+  if (id.length != 10)
+    {
+    return'身分證號碼錯誤！!\n';
+    }
+
+  var ID_Input    = new Array(10)
+  for (var i=0; i<10; i++) { ID_Input[i] = id.charAt(i) }
+  var EngString = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+  ID_Input[0]   = EngString.indexOf(ID_Input[0])
+  if (ID_Input[0] == -1)
+    {
+    return '身分證號碼錯誤！\r\n無開頭的字母！'
+    }
+  if (ID_Input[1] !=1 && ID_Input[1] !=2)
+    {
+    return '身分證號碼錯誤！\r\n無法辨識性別！'
+    }
+  var NumArray  = new Array(26)
+  NumArray[0]   = 1 ; NumArray[1]  = 10; NumArray[2]  = 19;
+  NumArray[3]   = 28; NumArray[4]  = 37; NumArray[5]  = 46;
+  NumArray[6]   = 55; NumArray[7]  = 64; NumArray[8]  = 39;
+  NumArray[9]   = 73; NumArray[10] = 82; NumArray[11] = 2 ;
+  NumArray[12]  = 11; NumArray[13] = 20; NumArray[14] = 48;
+  NumArray[15]  = 29; NumArray[16] = 38; NumArray[17] = 47;
+  NumArray[18]  = 56; NumArray[19] = 65; NumArray[20] = 74;
+  NumArray[21]  = 83; NumArray[22] = 21; NumArray[23] = 3 ;
+  NumArray[24]  = 12; NumArray[25] = 30;
+  var result = NumArray[ID_Input[0]]
+  for (var i=1; i<10; i++)
+    {
+    var NumString = '0123456789'
+    ID_Input[i] = NumString.indexOf(ID_Input[i])
+    if (ID_Input[i] == -1)
+      {
+      return '身分證號碼錯誤！\r\n數字檢查錯誤！'
+      }
+    else
+      { result += ID_Input[i] * (9-i) }
+    }
+
+  result += 1 * ID_Input[9]
+  if (result % 10 != 0)
+    {
+    return '身分證號碼錯誤！\r\n加總檢查錯誤！'
+    }
+  return "";
+}
+
+
+function check_null ( column, name )
+{
+    if( column.length == 0 )
+        return "請填寫 "+ name + "\n";
+    return "";
+}
+
+function check_null_en ( column, name )
+{
+    if( column.length == 0 )
+        return  " Your " + name + " is required information " + "\n";
+    return "";
+}
+
+function check_select ( select, name )
+{
+    if( select.options[0].selected == true )
+        return name + "必須選擇 !\n";
+    return "";
+}
+
+function check_radio ( radio, name )
+{
+    var error = true;
+    for( i=0; i < radio.length; i++ )
+        if( radio[i].checked == true ) {
+            error = false;
+            break;
+        }
+    if( error == true )
+        return name + "必須選擇 !\n";
+    return "";
+}
+
+function check_radio1( radio, name )
+{
+    var error = true;
+
+	if( radio.checked == true ) {
+		error = false;
+	}
+    if( error == true )
+        return name + "必須選擇 !\n";
+    return "";
+}
+
+function check_radio2 ( radio1,radio2,radio3,radio4, name )
+{
+    var error = true;
+    if( radio1.checked == true ) {
+            error = false;
+    }else if( radio2.checked == true ) {
+            error = false;
+    }else if( radio3.checked == true ) {
+            error = false;
+    }else if( radio4.checked == true ) {
+            error = false;
+    }       
+   
+    if( error == true )
+        return name + "必須選擇 !\n";
+    return "";
+}
+
+function check_radio3 ( radio1,radio2,radio3,radio4,radio5, name )
+{
+    var error = true;
+    if( radio1.checked == true ) {
+            error = false;
+    }else if( radio2.checked == true ) {
+            error = false;
+    }else if( radio3.checked == true ) {
+            error = false;
+    }else if( radio4.checked == true ) {
+            error = false;
+	}else if( radio5.checked == true ) {
+            error = false;
+    }       
+   
+    if( error == true )
+        return name + "必須選擇 !\n";
+    return "";
+}
+
+function check_number(num,name)
+{
+	var error = false;
+	if (num.length==0)
+		error=true;
+    for( idx = 0 ; idx < num.length ; idx++ ) {
+        if( !( num.charAt(idx) >= '0' && num.charAt(idx) <= '9' ) && num.charAt(idx)!='.' && num.charAt(idx)!='-') {
+            error = true;
+            break;
+        }
+    }
+    if( error == true )
+        return name + "必須填數字或　-　符號!\n";
+    return "";
+}
+
+function check_number2(num,name)
+{
+	var error = false;
+	//if (num.length==0)
+		//error=true;
+    for( idx = 0 ; idx < num.length ; idx++ ) {
+        if( !( num.charAt(idx) >= '0' && num.charAt(idx) <= '9' ) ) {
+            error = true;
+            break;
+        }
+    }
+    if( error == true )
+        return name + "必須填數字!\n";
+    return "";
+}
+
+function check_ip(num,name)
+{
+	var error = false;
+	if (num.length==0)
+		error=true;
+    for( idx = 0 ; idx < num.length ; idx++ ) {
+        if( !( num.charAt(idx) >= '0' && num.charAt(idx) <= '9' ) && num.charAt(idx)!='.') {
+            error = true;
+            break;
+        }
+    }
+    if( error == true )
+        return name + "必須填ip位址!\n";
+    return "";
+}
+
+function check_birthday_year( year )
+{
+    var error = false;
+    if( year.length != 4 )
+        return ("您的生日年份必須是四個數字, 例如 1980 年 !\n");
+    for( idx = 0 ; idx < year.length ; idx++ ) {
+        if( !( year.charAt(idx) >= '0' && year.charAt(idx) <= '9' ) ) {
+            error = true;
+            break;
+        }
+    }
+    if( error == true )
+        return ("您的生日年份必須是四個數字, 例如 1980 年 !\n");
+    return "";
+}
+
+function check_radio3 ( radio1,radio2,radio3,radio4,radio5,radio6,radio7,radio8,radio9,radio10,name )
+{
+    var error = true;
+    if( radio1.checked == true ) {
+            error = false;
+    }else if( radio2.checked == true ) {
+            error = false;
+    }else if( radio3.checked == true ) {
+            error = false;
+    }else if( radio4.checked == true ) {
+            error = false;
+    }else if( radio5.checked == true ) {
+            error = false;
+    }else if( radio6.checked == true ) {
+            error = false;
+    }else if( radio7.checked == true ) {
+            error = false;
+    }else if( radio8.checked == true ) {
+            error = false;
+    }else if( radio9.checked == true ) {
+            error = false;
+    }else if( radio10.checked == true ) {
+            error = false;
+    }          
+    if( error == true )
+        return name + "必須選擇 !\n";
+    return "";
+}
+
+function check_selectDay ( select1,select2,select3,select4,select5, name )
+{
+    if( select1.options[0].selected == true || select2.options[0].selected == true || select3.options[0].selected == true|| select4.options[0].selected == true || select5.options[0].selected == true)
+        return name + "必須選擇 !\n";
+    return "";
+}
+
+function check_selectPlace ( select1,select2, name )
+{
+	if( select1.options[0].selected == true ){
+        return name + "必須選擇 !\n";
+    }else if (select1.options[3].selected == true && select2.length == 0){
+     	return name + "，其他必須填明!\n";
+	}
+	return "";
+}
+
+function check_selectTitle ( select1,select2, name )
+{
+	if( select1.options[0].selected == true ){
+        return name + "必須選擇 !\n";
+    }else if (select1.options[10].selected == true && select2.length == 0){
+     	return name + "，其他必須填明!\n";
+	}
+	return "";
+}
+
+function check_telephonenumber ( numbers, StrInfo )
+{
+    var error = false;
+    if( numbers.length <= 0 )
+        return "您的"+StrInfo+"還沒填呢 !\n";
+    for( idx = 0 ; idx < numbers.length ; idx++ ) {
+        if( !( ( numbers.charAt(idx) >= '0' && numbers.charAt(idx) <= '9' ) || ( numbers.charAt(idx) == '-' ) ) ) {
+            error = true;
+            break;
+        }
+    }
+    if( error == true )
+        return "您的"+StrInfo+"只能是數字及'-'等符號, 其他的符號都不能使用 !\n";
+    return "";
+}
+
+function check_url (url)
+ {
+  if(url=="http://")
+	return "您的網址(URL)還沒填呢 !\n";
+   return "";
+ }
+
+ //密碼確認
+function check_passwd ( pw1, pw2 )
+{
+    if( pw1 == '' )  {
+        return ("密碼不可以空白 !\n");
+    }
+    for( var idx = 0 ; idx < pw1.length ; idx++ )
+        if( pw1.charAt(idx) == ' ' || pw1.charAt(idx) == '\"' )
+            return ("密碼不可以含有空白或雙引號 !\n");
+    if( pw1.length < 3 || pw1.length > 20 )
+        return( "密碼長度只能 3 到 20 個字母 !\n" );
+    if( pw1 != pw2 )
+        return("密碼二次輸入不一樣,請重新輸入 !\n");
+    return "";
+}
+//必填選擇
+function check_select ( select, name )
+{
+    if( select.options[0].selected == true )
+        return name + "必須選擇 !\n";
+    return "";
+}
+
+//居住城市判斷
+function check_city ( city1, city2 )
+{
+	if( city1 == '' && city2 == ''){
+	   return ("居住城市不可為空 !\n");
+	}
+	return "";
+}

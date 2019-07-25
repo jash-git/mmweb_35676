@@ -1,0 +1,52 @@
+//1010424 俊佑 增加字體放大縮小
+function favority(url, name){																		 // 加入最愛
+	if (document.all)
+		window.external.AddFavorite(url, name);
+	else if (window.sidebar)
+		window.sidebar.addPanel(name, url, "")
+}
+
+function ChangeFontSize(font_name,font_size){														 // 另開變換字體大小
+	var font=document.getElementById(font_name);
+	font.style.fontSize = font_size+'px';
+	font.style.lineHeight = parseInt(font_size+6)+'px';
+}
+function ajax_index(cate,area,body_name){
+	ajax_url ="ajax_index.php";
+	ajax_data="&ajax=1&cate="+ cate+"&area="+ area;
+	var flag= sendRequest(AjaxResult,ajax_data,"POST",ajax_url,true);
+	function AjaxResult(oj){
+		document.getElementById(body_name).innerHTML = oj.responseText;
+		translatePage2();
+	}
+	
+}
+/* 變換文字按鈕css */
+function ChangeBtn(cate,num,n){
+	for(i=1; i <= num; i++){
+		document.getElementById(cate+i).className = "btn_off";
+	}
+	document.getElementById(cate+n).className = "btn_on"; 
+}
+/* 放大圖 */
+function OpenPic(psrc){
+	document.getElementById("FloatPic").style.top = (document.documentElement.scrollTop+25) + "px";
+	document.getElementById("FloatPic").style.left=((document.body.clientWidth/2)-325)+"px";
+
+	document.getElementById('FloatPic').style.display='';
+	document.getElementById('PicFile').src=psrc;
+}
+function CloseBody(){
+	document.getElementById('FloatPic').style.display='none';
+	document.getElementById('PicFile').src='';
+}
+/* 字體放大縮小*/
+function ChangeFontSize(font_name,font_size){
+	var fontSize=parseInt(document.getElementById(font_name).style.fontSize);
+	var font=document.getElementById(font_name);
+  if (isNaN(fontSize)) fontSize=13;
+  if (font_size=="1"&&fontSize<=25)fontSize+=5;
+  if (font_size=="0"&&fontSize>10)fontSize-=5;
+  font.style.fontSize=fontSize+'px';
+  font.style.lineHeight = parseInt(fontSize+10)+'px';
+}

@@ -1,0 +1,138 @@
+//===== 播放flv影片 =====
+function flvPlay(url,width,height){
+	var str ="<object classid=\"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\" codebase=\"http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0\" width=\""+ width +"\" height=\""+ height +"\" id=\"FLVPlayer\">";
+	str += "<param name=\"movie\" value=\"/FLVPlayer_Progressive.swf\" />";
+	str +="<param name=\"salign\" value=\"lt\" />";
+	str +="<param name=\"quality\" value=\"hight\" />";
+	str +="<param name=\"scale\" value=\"noscale\" />"
+	str +="<param name=\"FlashVars\" value=\"&MM_ComponentVersion=1&skinName=Clear_Skin_1&streamName="+ url +"&autoPlay=false&autoRewind=false\" />";
+	str +="<embed src=\"/FLVPlayer_Progressive.swf\" flashvars=\"&MM_ComponentVersion=1&skinName=Clear_Skin_1&streamName="+ url +"&autoPlay=false&autoRewind=false\" quality=\"high\" scale=\"noscale\" width=\""+ width +"\" height=\""+ height +"\" name=\"FLVPlayer\" salign=\"LT\" type=\"application/x-shockwave-flash\" pluginspage=\"http://www.macromedia.com/go/getflashplayer\" />";
+	str +="</object>";
+	document.write(str);
+}
+
+//===== 播放swf影片 =====
+function swfPlay(flashfile, flash_width, flash_height){
+	var str = "<OBJECT classid=\"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\"";
+	str +="codebase=\"http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0\"";
+	str +="WIDTH="+ flash_width +" HEIGHT="+ flash_height +">";
+	str +="<param name=\"wmode\" value=\"opaque\">";
+	str +="<param name=\"movie\" value="+ flashfile +">";
+	str +="<embed src="+ flashfile +" wmode=\"opaque\" width="+ flash_width +" height="+ flash_height;
+	str +="allowScriptAccess=\"sameDomain\" type=\"application/x-shockwave-flash\" pluginspage=\"http://www.macromedia.com/go/getflashplayer\">";
+	str +="</OBJECT>";
+	document.write(str);
+}
+
+//===== 播放swf影片(透明) =====
+function swfPlayP(flashfile, flash_width, flash_height){
+	var str = "<OBJECT id=\"flasharea\" classid=\"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\"";
+	str +="codebase=\"http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0\"";
+	str +="WIDTH=\""+ flash_width +"\" HEIGHT=\""+ flash_height +"\">";
+	str +="<param name=\"wmode\" value=\"transparent\" />";
+	str +="<param name=\"movie\" value=\""+ flashfile +"\">";	
+	str +="<embed src=\""+ flashfile +"\" wmode=\"transparent\" width=\""+ flash_width +"\" height=\""+ flash_height +"\"";
+	str +="allowScriptAccess=\"sameDomain\" type=\"application/x-shockwave-flash\" pluginspage=\"http://www.macromedia.com/go/getflashplayer\">";
+	str +="</OBJECT>";
+	document.write(str);
+}
+
+//===== 播放swf影片(有控制項) =====
+function swfPlayA(flashfile, flash_width, flash_height){
+	var str = "<OBJECT classid=\"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\"";
+	str +="codebase=\"http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0\"";
+	str +="WIDTH="+ flash_width +" HEIGHT="+ flash_height +">";
+	str +="<param name=\"movie\" value="+ flashfile +">";
+	str +="<embed src="+ flashfile +" wmode=\"opaque\" width="+ flash_width +" height="+ flash_height;
+	str +="allowScriptAccess=\"sameDomain\" type=\"application/x-shockwave-flash\" pluginspage=\"http://www.macromedia.com/go/getflashplayer\">";
+	str +="</OBJECT>";
+	return str;
+}
+
+//===== 播放swf影片(手機不支援Flash時,顯示靜態底圖,同個網頁有多個flash) =====
+function swfPlayNew(flashfile, flash_width, flash_height, flash_div){
+	var parameters = {};
+	parameters.wmode = 'opaque';
+	swfobject.embedSWF(flashfile, flash_div, flash_width, flash_height, "9.0.0","expressInstall.swf",null,parameters,null);
+}
+
+//===== 播放swf影片(透明)(手機不支援Flash時,顯示靜態底圖) =====
+function swfPlayPA(flashfile, flash_width, flash_height){
+	var parameters = {};
+	parameters.wmode = 'transparent';
+	swfobject.embedSWF(flashfile, "un_flash", flash_width, flash_height, "9.0.0","expressInstall.swf",null,parameters,null);
+}
+
+//===== 播於wmv影片 =====
+function wmvPlay(file,width,height){
+	h = 64;
+	height += h;
+	var str ="<object id={BBID} ";	
+	str +="codebase=http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab#Version=5,1,52,701 ";
+	str +="type=application/x-oleobject height="+ height +" "; 	
+	str +="standby=\"Loading Microsoft Windows Media Player components...\" ";
+	str +="width="+ width +" ";	
+	str +="classid=CLSID:22d6f312-b0f6-11d0-94ab-0080c74c7e95>";
+	str +="<param name=\"AudioStream\" value=\"1\">";
+	str +="<param name=\"AutoSize\" value=\"-1\">";
+	str +="<param name=\"AutoStart\" value=\"1\">";
+	str +="<param name=\"AnimationAtStart\" value=\"0\">";
+	str +="<param name=\"AllowScan\" value=\"-1\">";
+	str +="<param name=\"AllowChangeDisplaySize\" value=\"-1\">";
+	str +="<param name=\"AutoRewind\" value=\"0\">";
+	str +="<param name=\"Balance\" value=\"0\">";	
+	str +="<param name=\"BaseURL\" value=\""+ file +"\">";
+	str +="<param name=\"BufferingTime\" value=\"5\">";
+	str +="<param name=\"CaptioningID\" value=\"\">";	
+	str +="<param name=\"ClickToPlay\" value=\"-1\">";
+	str +="<param name=\"CursorType\" value=\"0\">";	
+	str +="<param name=\"CurrentPosition\" value=\"-1\">";
+	str +="<param name=\"CurrentMarker\" value=\"0\">";
+	str +="<param name=\"DefaultFrame\" value=\"\">";
+	str +="<param name=\"DisplayBackColor\" value=\"1\">";
+	str +="<param name=\"DisplayForeColor\" value=\"16777215\">";
+	str +="<param name=\"DisplayMode\" value=\"0\">";
+	str +="<param name=\"DisplaySize\" value=\"0\">";
+	str +="<param name=\"Enabled\" value=\"-1\">";
+	str +="<param name=\"EnableContextMenu\" value=\"-1\">";
+	str +="<param name=\"EnablePositionControls\" value=\"-1\">";
+	str +="<param name=\"EnableFullScreenControls\" value=\"0\">";
+	str +="<param name=\"EnableTracker\" value=\"-1\">";	
+	str +="<param name=\"Filename\" value=\""+ file +"\">";
+	str +="<param name=\"InvokeURLs\" value=\"-1\">";
+	str +="<param name=\"Language\" value=\"-1\">";
+	str +="<param name=\"Mute\" value=\"0\">";
+	str +="<param name=\"PlayCount\" value=\"1\">";
+	str +="<param name=\"PreviewMode\" value=\"1\">";
+	str +="<param name=\"Rate\" value=\"1\">";
+	str +="<param name=\"SAMILang\" value=\"\">";
+	str +="<param name=\"SAMIStyle\" value=\"\">";
+	str +="<param name=\"SAMIFileName\" value=\"\">";
+	str +="<param name=\"SelectionStart\" value=\"-1\">";
+	str +="<param name=\"SelectionEnd\" value=\"-1\">";
+	str +="<param name=\"SendOpenStateChangeEvents\" value=\"-1\">";
+	str +="<param name=\"SendWarningEvents\" value=\"-1\">";
+	str +="<param name=\"SendErrorEvents\" value=\"-1\">";
+	str +="<param name=\"SendKeyboardEvents\" value=\"0\">";
+	str +="<param name=\"SendMouseClickEvents\" value=\"0\">";
+	str +="<param name=\"SendMouseMoveEvents\" value=\"1\">";
+	str +="<param name=\"SendPlayStateChangeEvents\" value=\"-1\">";
+	str +="<param name=\"ShowCaptioning\" value=\"0\">";
+	str +="<param name=\"ShowControls\" value=\"1\">";
+	str +="<param name=\"ShowAudioControls\" value=\"1\">";
+	str +="<param name=\"ShowDisplay\" value=\"0\">";
+	str +="<param name=\"ShowGotoBar\" value=\"0\">";
+	str +="<param name=\"ShowPositionControls\" value=\"0\">";	
+	str +="<param name=\"ShowStatusBar\" value=\"1\">";
+	str +="<param name=\"ShowTracker\" value=\"1\">";
+	str +="<param name=\"TransparentAtStart\" value=\"-1\">";
+	str +="<param name=\"uiMode\" value=\"full\">";
+	str +="<param name=\"VideoBorderWidth\" value=\"0\">";
+	str +="<param name=\"VideoBorderColor\" value=\"0\">";
+	str +="<param name=\"VideoBorder3D\" value\"0\">";
+	str +="<param name=\"Volume\" value=\"1\">";
+	str +="<param name=\"WindowlessVideo\" value=\"0\">";
+	str +="</object>";
+
+	document.write(str);
+}
