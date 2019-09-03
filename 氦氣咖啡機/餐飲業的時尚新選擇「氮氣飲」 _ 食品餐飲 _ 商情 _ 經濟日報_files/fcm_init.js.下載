@@ -1,0 +1,93 @@
+// for money
+// Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCE739kzDemp_nzPDl9hAMjPQxQLX33b-A",
+    authDomain: "udn-money.firebaseapp.com",
+    databaseURL: "https://udn-money.firebaseio.com",
+    storageBucket: "udn-money.appspot.com",
+    messagingSenderId: "81359350690"
+  };
+  firebase.initializeApp(config);
+  
+  // [START get_messaging_object]
+  // Retrieve Firebase Messaging object.
+  const messaging = firebase.messaging();
+  if(window.location.protocol === "https:"){
+  messaging.requestPermission()
+	.then(function() {
+      // console.log('Notification permission granted.');      
+      // [START_EXCLUDE]
+      // In many cases once an app has been granted notification permission, it
+      // should update its UI reflecting this.
+	 	  
+		messaging.getToken()
+		.then(function(currentToken) {
+			if (currentToken) {								
+				var data = '?token='+currentToken+"&agent="+navigator.userAgent.toLowerCase()+"&site=Money&session="+GetCkValue("_eruid");
+				var storage_token = window.localStorage.getItem("fcm_token");;				
+				if( storage_token === currentToken ){
+					console.log( " match storage..." );
+				}else{
+					//do fetch
+					fetch("/fcm/fetchToken"+data,{
+						method : "GET"
+						//,body :  data 
+					}).then(function(response){
+						if(response.ok){				
+							return response.text().then(function(data){
+								var obj = JSON.parse( data );								
+								if( obj['type'] == 'exists' ){
+									window.localStorage.setItem('fcm_token', currentToken );
+									console.log('gotcha');
+								}
+								console.log( data );
+							});
+						}
+					}).catch(function(error){
+						console.log("error:"+error);
+					}); 
+				}
+				
+			} else {
+				// Show permission request.
+				console.log('No Instance ID token available. Request permission to generate one.');										
+			}
+			
+		});
+						
+	})	
+    .catch(function(err) {
+      console.log('Unable to get permission to notify.', err);
+    });
+		
+	
+	// Handle incoming messages. Called when:
+	// - a message is received while the app has focus
+	// - the user clicks on an app notification created by a sevice worker
+	//   `messaging.setBackgroundMessageHandler` handler.
+	messaging.onMessage(function(payload) {
+		// [START_EXCLUDE]
+		
+		const notificationTitle = payload.notification.title;
+		const notificationOptions = {
+			body: payload.notification.body,
+			icon: payload.notification.icon,		
+		};
+		 if (!("Notification" in window)) {
+			console.log("This browser does not support system notifications");
+		}
+		// Let's check whether notification permissions have already been granted
+		else if (Notification.permission === "granted") {
+		// If it's okay let's create a notification
+			var notification = new Notification(notificationTitle,notificationOptions);
+			
+			notification.onclick = function(event) {
+				event.preventDefault(); // prevent the browser from focusing the Notification's tab
+				window.open( payload.notification.click_action , '_blank');
+				notification.close();
+			}
+		}
+					 		
+		// [END_EXCLUDE]
+	});
+  }	

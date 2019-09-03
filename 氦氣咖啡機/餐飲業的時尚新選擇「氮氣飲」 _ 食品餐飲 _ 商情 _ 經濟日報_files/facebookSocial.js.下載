@@ -1,0 +1,78 @@
+$(function() {
+  'use strict';
+
+  var appid = $('meta[property="fb:app_id"]').attr('content');
+  var facebookLikeHolder = $('.facebook-Likeholder');
+  var socialised = {};
+  var win = $(window);
+  var onUpdate;
+  var updateTimeout;
+  var loaded = false;
+
+  //load facebook api only when visible
+  var loadAPI = function() {
+    if (loaded === true) return false;
+    loaded = true;
+    var js = document.createElement('script');
+    js.src = '//connect.facebook.net/zh_TW/all.js#xfbml=1&appId=' + appid + '&version=v3.2';
+    document.body.appendChild(js);
+  };
+
+
+  var facebookLikeButtoninView = function() {
+    // viewport bounds
+    var wT = win.scrollTop(),
+      wL = win.scrollLeft(),
+      wR = wL + win.width(),
+      wB = wT + win.height();
+    // check which facebookLikeHolder are visible and socialise!
+    for (var i = 0; i < facebookLikeHolder.length; i++) {
+      if (socialised[i]) {
+        continue;
+      }
+      // article bounds
+      var art = $(facebookLikeHolder[i]),
+        aT = art.offset().top,
+        aL = art.offset().left,
+        aR = aL + art.width(),
+        aB = aT + art.height();
+
+      // vertial point inside viewport
+      if ((aT >= wT && aT <= wB) || (aB >= wT && aB <= wB)) {
+        // horizontal point inside viewport
+        if ((aL >= wL && aL <= wR) || (aR >= wL && aR <= wR)) {
+          socialised[i] = true;
+          Socialite.load(facebookLikeHolder[i]);
+        }
+      }
+    }
+  };
+
+  onUpdate = function() {
+    if (updateTimeout) {
+      clearTimeout(updateTimeout);
+    }
+    updateTimeout = setTimeout(facebookLikeButtoninView, 100);
+  };
+
+  win.on('scroll resize load', function() {
+    if (win.width() > 749) {
+      // checkScrollingForWidget();
+      onUpdate();
+    } else {
+      if (updateTimeout) clearTimeout(updateTimeout);
+      // console.log('jey');
+    }
+
+    if ($('.facebook-holder').length) {
+      var rect = $('.facebook-holder').get(0).getBoundingClientRect();
+      if (rect.top < window.innerHeight) {
+        loadAPI();
+      }
+    }
+  });
+
+  // setTimeout(facebookLikeButtoninView, 100);
+
+
+});

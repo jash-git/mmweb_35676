@@ -1,0 +1,213 @@
+.app {
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15px;
+    /* margin-bottom: 20px; */
+    /*background-color: #f2dede;*/
+   /* border: 1px solid #e50027;*/
+    -webkit-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -o-border-radius: 4px;
+    -ms-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.app > .app_title {
+    font-family: "黑體", Verdana, "微軟正黑體", Arial, Geneva, sans-serif, helvetica;
+    color: #bd0302;
+    font-size: 1.2rem;
+    /*line-height: 1.2em;*/
+    letter-spacing: -1px;
+    padding: 12px;
+    vertical-align: middle;
+   /* height: 50px;*/
+}
+
+.app_title img {
+  width: 55px;
+}
+
+
+.app > .app_title span {
+    color: #333;
+}
+
+.app > .table {
+    background-color: #fff;
+    padding: 12px;
+    -webkit-border-radius: 0px 0px 4px 4px;
+    -webkit-border-radius: 0px 0px 4px 4px;
+    -o-border-radius: 0px 0px 4px 4px;
+    -ms-border-radius: 0px 0px 4px 4px;
+    border-radius: 0px 0px 4px 4px;
+    height: auto;
+    min-height: 430px;
+}
+
+.table img {
+  width: 100%
+}
+
+.btn {
+    float: left;
+    display: block;
+    vertical-align: top;
+    width: 112px;
+    margin-left:3px;
+}
+
+.icon {
+    float: left;
+    display: block;
+    vertical-align: top;
+    width: auto;
+    margin-right:4px;
+
+}
+
+
+.facebook {
+    float: left;
+    display: block;
+    vertical-align: top;
+    width: 295px;
+    height: 130px;
+}
+
+@media (max-width: 320px)
+ {
+
+.btn {
+    float: left;
+    display: block;
+    vertical-align: top;
+    width: 90px;
+    margin-left:4px;
+}
+
+.icon {
+    float: left;
+    display: block;
+    vertical-align: top;
+    width: 45px;
+    margin-right:3px;
+}
+
+.facebook {
+    float: left;
+    display: block;
+    vertical-align: top;
+    width: 277px;
+    height: 130px;
+}
+
+
+
+}
+
+.title {
+    font-family: Verdana, Arial, Geneva, sans-serif, helvetica;
+    color: #333;
+    font-size: 0.713rem;
+    margin: 10px 0px 10px 0px;
+    float: left;
+    width: 98%;
+
+}
+
+
+.btn > .s_txt {
+    font-family: Verdana, Arial, Geneva, sans-serif, helvetica;
+    color: #333;
+    font-size: 0.813rem;
+    margin: -10px 0px -10px 0px;
+}
+
+.btn > .title {
+    font-family: Verdana, Arial, Geneva, sans-serif, helvetica;
+    color: #333;
+    font-size: 0.813rem;
+    margin: 5px 0px 5px 0px;
+    float: left;
+    width: 98%;
+}
+
+.btn > p{
+    padding: 7px 0px 15px;
+    color: #080808;
+    font-size: 1.2rem;
+    line-height: 1.6em;
+}
+
+.android {
+    float: left;
+}
+
+.question {
+    display: inline;
+    width: 100%;
+    margin-right: 5px;
+    float: left;
+}
+
+.question > .s_txt {
+    font-family: Verdana, Arial, Geneva, sans-serif, helvetica;
+    color: #333;
+    font-size: 0.813rem;
+    margin: 5px 0px 5px 0px;
+    float: left;
+}
+
+
+.fb {
+    display: inline;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100px;
+}
+
+.fb > .s_txt {
+    font-family: Verdana, Arial, Geneva, sans-serif, helvetica;
+    color: #333;
+    font-size: 0.813rem;
+    margin: 5px 0px 5px 0px;
+    float: left;
+}
+
+.line {
+    display: inline;
+    width: 48%;
+/*    margin-left: auto;*/
+    margin-right: 5px;
+    float: left;
+}
+
+
+
+
+.line > .s_txt {
+    font-family: Verdana, Arial, Geneva, sans-serif, helvetica;
+    color: #333;
+    font-size: 0.813rem;
+    margin: 5px 0px 5px 0px;
+    float: left;
+}
+
+.youtube {
+    display: inline;
+    width: 48%;
+/*    margin-left: auto;
+    margin-right: auto;*/
+    float: left;
+}
+
+.youtube > .s_txt {
+    font-family: Verdana, Arial, Geneva, sans-serif, helvetica;
+    color: #333;
+    font-size: 0.813rem;
+    margin: 5px 0px 5px 0px;
+    float: left;
+}
+

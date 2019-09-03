@@ -1,0 +1,99 @@
+var Sys = {};
+
+$(function() {
+
+    function setCookie(name, value, expire_date) {
+
+        $.cookie(name, value, {
+            path: '/',
+            expires: expire_date
+        });
+    }
+
+    // get Cookie
+    function getCookie(name, value) {
+        var currentCookie = $.cookie(name);
+        console.log(currentCookie, value);
+        return (currentCookie === value) ? true : false;
+    }
+
+    var ua = navigator.userAgent.toLowerCase();
+    var s;
+    (s = ua.match(/rv:([\d.]+)\) like gecko/)) ? Sys = {
+            browser: 'ie',
+            version: s[1]
+        }:
+        (s = ua.match(/msie ([\d.]+)/)) ? Sys = {
+            browser: 'ie',
+            version: s[1]
+        } :
+        (s = ua.match(/firefox\/([\d.]+)/)) ? Sys = {
+            browser: 'firefox',
+            version: s[1]
+        } :
+        (s = ua.match(/chrome\/([\d.]+)/)) ? Sys = {
+            browser: 'chrome',
+            version: s[1]
+        } :
+        (s = ua.match(/opera.([\d.]+)/)) ? Sys = {
+            browser: 'opera',
+            version: s[1]
+        } :
+        (s = ua.match(/version\/([\d.]+).*safari/)) ? Sys = {
+            browser: 'safari',
+            version: s[1]
+        } : Sys = 0;
+
+
+    function showBox() {
+        // $.cookie('showScreen', 'true', { expires: 180 });
+        if (getCookie('showScreen', 'true')) return;
+        console.log('set display')
+        $('#browser-update').addClass('update-show');
+    }
+
+    //偵測 ie 瀏覽器與下載版本
+    if (Sys.browser === 'ie' && Sys.version < 11) {
+        console.log('show me box');
+        showBox();
+    }
+
+    //置換更新載點連結
+    var link = (function checkBrowser() {
+        var currentBrower = Sys.browser;
+        var link = (function() {
+            switch (currentBrower) {
+                case 'ie':
+                    return 'http://windows.microsoft.com/ie';
+                    break;
+                case 'firefox':
+                    return 'http://www.mozilla.org/firefox/new/';
+                    break;
+                case 'opera':
+                    return 'http://www.opera.com/?utm_medium=roc&utm_source=burocratik&utm_campaign=outdatedbrowser';
+                    break;
+                case 'safari':
+                    return 'http://www.apple.com/osx/';
+                    break;
+                case 'chrome':
+                    return 'https://www.google.com/chrome/browser/desktop/';
+                    break;
+                default:
+            };
+        }());
+
+        return link;
+    }());
+
+    $('#browser-update a').attr('href', link);
+
+    //關閉更新提醒視窗，設定 cookie
+    $(".close").on('click', function() {
+        $("#browser-update").slideUp();
+        var expire_date = 180; //設定180天後到期
+        // var expire_date = new Date();
+        // expire_date.setTime(expire_date.getTime() + (0.2 * 60 * 1000)); //設定12秒後到期
+        setCookie('showScreen', 'true', expire_date); //cookie-name, cookie-value, expired
+    });
+
+});

@@ -1,0 +1,45 @@
+
+
+
+//font-size
+$(function() {
+
+  var chgFontSize = function(type, fs) {
+
+	var constantsValue = 2;
+	var currentFontsize = parseInt($('#story_body_content').css('font-size'));
+
+	if (fs === '' || fs === undefined) {
+	  if (type === '+') {
+		if (currentFontsize < 23) {
+		  currentFontsize = currentFontsize + constantsValue;
+		  $('#story_body_content').css('font-size', currentFontsize);
+		}
+	  } else if (type === '-') {
+		if (currentFontsize > 11) {
+		  currentFontsize = currentFontsize - constantsValue;
+		  $('#story_body_content').css('font-size', currentFontsize);
+		}
+	  }
+	} else {
+	  $("#story_body_content").css('font-size', parseInt(fs));
+	}
+
+	$.cookie('fontsize', currentFontsize, {
+	  path: '/'
+	});
+  };
+
+  if ($.cookie('fontsize') !== '' && !isNaN($.cookie('fontsize'))) {
+	var fs = $.cookie('fontsize');
+	chgFontSize('', fs);
+  }
+
+  $('.set_font_size a').on('click', function(e) {
+	e.preventDefault();
+	var attribute = $(this).attr('data-attr');
+	chgFontSize(attribute, '');
+  });
+
+
+});

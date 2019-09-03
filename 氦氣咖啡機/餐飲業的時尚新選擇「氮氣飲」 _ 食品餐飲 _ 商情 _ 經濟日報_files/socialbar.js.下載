@@ -1,0 +1,136 @@
+$(function() {
+  'use strict';
+
+	function is_touch_device() {
+	　return 'ontouchstart' in window // works on most browsers
+	　|| navigator.maxTouchPoints; // works on IE10/11 and Surface
+	};
+
+
+  var sharingContent = function(s, t, i, d) {
+	var ogUrl = $('meta[property="og:url"]').attr('content');
+	var ogUrlShare = $('meta[property="og:url"]').attr('content') + '&o=mfbshare';
+
+	var ogTitle = encodeURIComponent($('meta[property="og:title"]').attr('content'));
+	var ogImage = encodeURIComponent($('meta[property="og:image"]').attr('content'));
+	var ogDescription = encodeURIComponent($('meta[property="og:description"]').attr('content'));
+
+	var clUrl = encodeURIComponent("https://money.udn.com/share_close.html");
+	var encodedIMG = encodeURIComponent(i);
+	var encodedDES = encodeURIComponent(d);
+
+	var appid = $('meta[property="fb:app_id"]').attr('content');
+
+	switch (s) {
+	  case 'twitter':
+		if (t === "img") {
+		  window.open("https://twitter.com/intent/tweet?text=" + encodedDES + "&url=" + ogUrl, 'Twitter Share Picture', 'toolbar=no,width=1024,height=480,directories=no,status=no,scrollbars=no,resize=no,menubar=no');
+		} else {
+		  window.open("https://twitter.com/intent/tweet?text=" + ogTitle + "&url=" + ogUrl);
+		}
+		break;
+	  case 'plurk':
+		if (t === "img") {
+		  window.open("http://www.plurk.com/?status=" + ogUrl + "&nbsp;(&nbsp;" + encodedDES + "&nbsp;", 'Plurk Share Picture', 'toolbar=no,width=1024,height=480,directories=no,status=no,scrollbars=no,resize=no,menubar=no');
+		} else {
+		  window.open("http://www.plurk.com/?status=" + ogUrl + "&nbsp;(&nbsp;" + ogTitle + "&nbsp;");
+		}
+		break;
+	  case 'pinterest':
+		window.open("http://pinterest.com/pin/create/button/?url=" + ogUrl + "&media=" + encodedIMG + "&description=" + encodedDES, 'Pinterest Share Picture', 'toolbar=no,width=1024,height=480,directories=no,status=no,scrollbars=no,resize=no,menubar=no');
+		break;
+	  case 'googleplus':
+		window.open("https://plus.google.com/share?url=" + ogUrl, 'Google Share Picture', 'toolbar=no,width=600,height=600,directories=no,status=no,scrollbars=no,resize=no,menubar=no');
+		break;
+	  case 'facebook':
+		var sharingType;
+		if (t === "img") {
+		  sharingType = encodedIMG;
+		} else {
+		  sharingType = ogImage;
+		}
+		window.open("https://www.facebook.com/dialog/feed?app_id=" + appid + "&display=popup&link=" + ogUrl + "&picture=" + sharingType + "&name=" + ogTitle + "&caption=" + ogUrl + "&description=" + encodedDES + "&redirect_uri=" + clUrl, 'Facebook Share Picture', 'toolbar=no,width=1024,height=480,directories=no,status=no,scrollbars=no,resize=no,menubar=no');
+		break;
+	  case 'facebookLink':
+		window.open("https://www.facebook.com/dialog/feed?app_id=" + appid + "&display=popup&link=" + ogUrlShare + "&picture=" + ogImage + "&name=" + ogTitle + "&caption=" + ogUrl + "&description=" + ogDescription + "&redirect_uri=" + clUrl, 'Facebook Share Picture', 'toolbar=no,width=1024,height=480,directories=no,status=no,scrollbars=no,resize=no,menubar=no');
+		
+		// FB.ui({
+		//   method: 'share',
+		//   href: ogUrl,
+		// }, function(response) {
+		//
+		// });
+		break;
+	  // case 'line':
+		// if (is_touch_device()) {
+		// 　// touch
+		// 	window.open('http://line.naver.jp/R/msg/text/?'.concat(ogTitle).concat('%3A').concat(ogUrl));
+		// }
+		// else {
+		// 	window.open("https://lineit.line.me/share/ui?url=" + ogUrl, 'Line Share Picture', 'toolbar=no,width=1024,height=480,directories=no,status=no,scrollbars=no,resize=no,menubar=no');
+		// }
+		// break;
+	  default:
+	}
+
+  };
+
+
+
+  // //Register event
+  // $('.photo_pop ul li a').on('click', function(e) {
+  // .preventDefault();
+  // / console.log($(this));
+  // ar current = $(this).attr('title');
+  //
+  //
+  // / var temp = $(this).parent().parent().parent().parent(); //find the parent of the img
+  // / var tempImg = temp.find('img');
+  // / var tempType = tempImg.selector;
+  // / var tempSrc = tempImg[0].currentSrc;
+  // / sharingContent(current, tempType, tempSrc, desc);
+  //
+  // ar currentImg = $(this).closest('.photo-story').find('img');
+  // ar desc = $(this).closest('.photo-story').find('h4').text();
+  // ar type = currentImg.selector;
+  // ar imgSrc = currentImg[0].src; // this work in IE instead of currentSrc
+  // haringContent(current, type, imgSrc, desc);
+  //
+  //
+  // });
+
+  // $('#shareBar li a, .story_bar li a').on('click', function(e) {
+  // $('.social_bar li:not(".line") a').on('click', function(e) {
+  $('#shareBar li:not(".lineShare") a, .story_bar li:not(".lineShare") a').on('click', function(e) {
+	e.preventDefault();
+
+	var current = $(this).parent().attr('class');
+	switch (current) {
+	  case 'fb':
+		sharingContent('facebookLink');
+		break;
+	  case 'gp':
+		sharingContent('googleplus');
+		break;
+	  // case 'line':
+		// sharingContent('line');
+		// break;
+	  // case 'linelike':
+		// sharingContent('line');
+		// break;
+	  case 'print':
+		window.print();
+		break;
+	  case 'discuss':
+		// window.location.hash = '#comments';
+		document.getElementById('comments').scrollIntoView();
+		// $('html').animate({
+		//   scrollTop: $("#comments").offset().top
+		// }, 500);
+		break;
+	  default:
+	}
+  });
+
+
+});

@@ -1,0 +1,255 @@
+(function(root, factory) {
+  // exposed as module or globally
+  if (typeof define === 'function' && define.amd) {
+    define([], factory(root));
+  } else if (typeof exports === 'object') {
+    module.exports = factory(root);
+  } else {
+    root.adsModel = factory(root);
+  }
+})(typeof global !== 'undefined'
+    ? global
+    : window || global, function(root) {
+  'use strict';
+
+  // helper fn to extend options and default opts
+  var extend = function() {
+    // Variables
+    var extended = {};
+    var deep = false;
+    var i = 0;
+    var length = arguments.length;
+
+    // Check if a deep merge
+    if (Object.prototype.toString.call(arguments[0]) === '[object Boolean]') {
+      deep = arguments[0];
+      i++;
+    }
+
+    // Merge the object into the extended object
+    var merge = function(obj) {
+      for (var prop in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, prop)) {
+          // If deep merge and property is an object, merge properties
+          if (deep &&
+              Object.prototype.toString.call(obj[prop]) === '[object Object]') {
+            extended[prop] = extend(true, extended[prop], obj[prop]);
+          } else {
+            extended[prop] = obj[prop];
+          }
+        }
+      }
+    };
+
+    // Loop through each object and conduct a merge
+    for (; i < length; i++) {
+      var obj = arguments[i];
+      merge(obj);
+    }
+
+    return extended;
+
+  };
+
+  //default options
+  var defaultOption = {
+    overlayClose: true,
+    overlayContainer: '.overlay-container',
+    closeBtn: '.close-btn',
+    adsContainer: '.ads-container',
+    overlayMask: '.overlay-mask',
+    closeTimer: 7000,
+    autoClose: false,
+    adsCookie: true,
+    adTag: 'div-gpt-ad-1496826774110-0', //news tag as default
+    breakpoint: 750,
+  };
+
+  var adsModel = function(opts) {
+    var options = extend(defaultOption, opts || {});
+    var waitAdsShow = false;
+    var adsContainerTimer;
+    if (adsContainerTimer !== null)
+      clearTimeout(adsContainerTimer);
+    var closeBtnTimer;
+    if (closeBtnTimer !== null)
+      clearTimeout(closeBtnTimer);
+
+    if (window.innerWidth > options.breakpoint) return false;
+    if (!document.querySelector(options.adsContainer)) return false;
+
+    var closeBtnMarkup = '<span class="close-btn"><i class="i-close"></i></span>';
+    var overlayMaskMarkup = '<div class="overlay-mask"></div>';
+
+    if (!document.querySelector(options.overlayMask)) {
+      options.overlayMaskMarkup = '.overlay-mask';
+      document.querySelector(options.overlayContainer).
+          insertAdjacentHTML('beforeend', overlayMaskMarkup);
+    }
+    if (!document.querySelector(options.closeBtn)) {
+      options.closeBtn = '.close-btn';
+      document.querySelector(options.adsContainer).
+          insertAdjacentHTML('afterbegin', closeBtnMarkup);
+    }
+
+    console.log(options);
+
+    var visibilityHelperFn = function(container, val, op) {
+      var check = Array.from(arguments);
+      console.log(check);
+      console.log(container);
+      var opts = (val)
+          ? {
+            o: 0,
+            v: 'hidden',
+          }
+          : {
+            o: 1,
+            v: 'visible',
+          };
+      // console.log(container, opts);
+
+      document.querySelector(container).style.opacity = opts.o;
+      document.querySelector(container).style.visibility = opts.v;
+
+      if (op) {
+        setTimeout(function() {
+          document.querySelector(
+              options.overlayContainer).style.display = 'none';
+        }, 300);
+      }
+
+    };
+
+    var openAds = function() {
+      try {
+        googletag.cmd.push(function() {
+          console.log(options.adTag);
+
+          //close button only occur if visibility completed
+          googletag.pubads().
+              addEventListener('slotVisibilityChanged', function(event) {
+
+                if (event.inViewPercentage > 100 &&
+                    event.slot.getSlotElementId() === options.adTag && !waitAdsShow) {
+                  // closeBtnTimer = setTimeout(function () {
+                  // console.log('hit from visibility');
+                  // notie.alert({ text: 'slotVisibilityChanged!' + event.inViewPercentage, type: 1, stay: true })
+
+                  visibilityHelperFn(options.closeBtn, false);
+                  waitAdsShow = true;
+                  // }, 3000);
+                }
+              });
+          googletag.pubads().addEventListener('slotRenderEnded', function (event) {
+            if (event.slot.getSlotElementId() === options.adTag) {
+              // closeBtnTimer = setTimeout(function() {
+              // console.log('hit from slotRenderEnded');
+              // notie.alert({ text: 'slotRenderEnded!', position: 'top', stay: true  })
+
+              visibilityHelperFn(options.closeBtn, false);
+                waitAdsShow = true;
+              // }, 3000);
+
+            }
+          });
+
+          googletag.display(options.adTag);
+        });
+
+        // console.log('hit from adtag');
+        // notie.alert({ text: 'adtag!', position: 'bottom', stay: true  })
+        visibilityHelperFn(options.closeBtn, false);
+        waitAdsShow = true;
+        visibilityHelperFn(options.overlayMask, false);
+        adsContainerTimer = setTimeout(function() {
+          visibilityHelperFn(options.adsContainer, false);
+        }, 800);
+
+      } catch (e) {
+        console.warn(e);
+      }
+      // visibilityHelperFn(options.overlayMask, false);
+      // adsContainerTimer = setTimeout(function() {
+      //   visibilityHelperFn(options.adsContainer, false);
+      // }, 800);
+
+    };
+
+    var closeAds = function() {
+      if (!waitAdsShow)
+        return false;
+
+      // weird js behaviour - cannot use helper function here - might be async code behaviour of javascript
+      document.querySelector(options.overlayContainer).style.opacity = 0;
+      document.querySelector(
+          options.overlayContainer).style.visibility = 'hidden';
+      document.querySelector(options.overlayMask).style.opacity = 0;
+      document.querySelector(options.overlayMask).style.visibility = 'hidden';
+      document.querySelector(options.adsContainer).style.opacity = 0;
+      document.querySelector(options.adsContainer).style.visiblity = 'hidden';
+      document.querySelector(options.closeBtn).style.opacity = 0;
+      document.querySelector(options.closeBtn).style.visibility = 'hidden';
+      setTimeout(function() {
+        document.querySelector(options.overlayContainer).remove();
+      }, 2000);
+
+      visibilityHelperFn(options.closeBtn, true, true);
+    };
+
+    if (options.adsCookie) {
+      console.log(options.adsCookie);
+      // 1 .check iframe exists?? DOM Parse conflict! this will cause error -<
+      // do some cookies stuff
+      var cookieCheck = $.cookie('page_cover');
+      if (cookieCheck !== 'Y') {
+        openAds();
+        var expire_date = new Date();
+        var pointer = document.querySelector(options.overlayContainer);
+        var minute = (pointer.hasAttribute('data-minutes')) ? parseInt(pointer.getAttribute('data-minutes')) : 2;
+        console.log('Cookies Minute for overlay Ads', minute);
+
+        expire_date.setTime(expire_date.getTime() + (minute * 60 * 1000));
+
+        $.cookie('page_cover', 'Y', {
+          path: '/',
+          expires: expire_date,
+        });
+        // var expireDate = new Date();
+        // expireDate.setTime(expireDate.getTime() + (2 * 60 * 1000));
+        // document.cookie = 'page_cover=Y; expires=' + expireDate  + '; path=/';
+      } else {
+        console.log('cookies');
+        document.querySelector(options.overlayContainer).remove();
+      }
+    } else {
+      //no cookies and show it anyway;
+      openAds();
+    }
+
+    try {
+      document.querySelector(options.closeBtn).
+          addEventListener('click', closeAds);
+    } catch (error) {
+      console.warn('No Overlay Close Button,', error);
+    }
+
+    if (options.overlayClose) {
+      try {
+        document.querySelector(options.overlayContainer).
+            addEventListener('click', closeAds);
+      } catch (err) {
+        console.warn('No Overlay container,', err);
+      }
+
+    }
+
+    if (options.autoClose) {
+      setTimeout(closeAds, options.closeTimer);
+    }
+
+  };
+
+  // exposes api
+  return adsModel;
+});

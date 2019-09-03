@@ -1,0 +1,12 @@
+$(function() {
+	//adjust og:image:width & height by og:image
+	if(  $('meta[property="og:image"]').length ){
+		var img = new Image();
+		img.onload = function () {
+			//set width & height		
+			$('meta[property="og:image:width"]').attr('content',this.width);
+			$('meta[property="og:image:height"]').attr('content',this.height);
+		}
+		img.src = $('meta[property="og:image"]').attr('content');
+	}
+})

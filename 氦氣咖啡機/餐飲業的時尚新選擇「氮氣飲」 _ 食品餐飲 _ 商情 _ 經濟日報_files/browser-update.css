@@ -1,0 +1,46 @@
+@charset utf-8;
+
+#browser-update {
+    position: relative;
+    font-size: 18px;
+    line-height: 1.5;
+    color: #fff;
+    background-color: #119cbb;
+    text-align: center;
+    padding: 30px 20px 20px;
+    box-sizing: border-box;
+    display: none;
+    cursor: pointer;
+}
+
+#browser-update a {
+    display: block;
+    color: #fff;
+    text-decoration: none;
+}
+
+#browser-update span {
+    color: #fff;
+    padding: 3px 10px;
+    margin-left: 5px;
+    border: 1px solid #fff;
+}
+
+#browser-update.update-show {
+    display: block;
+}
+@media screen and (max-width:1024px){
+  #browser-update.update-show {
+    display: none;
+  }
+}
+
+#browser-update .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 36px;
+    color: #fff;
+    cursor: pointer;
+    z-index: 999;
+}
